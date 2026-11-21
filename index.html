@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>倉儲管理系統</title>
+<style>
+  body { margin: 0; min-height: 100vh; display: grid; place-items: center; background: #e8ecf1; color: #1d2330;
+         font: 16px/1.6 system-ui, -apple-system, "Microsoft JhengHei", "PingFang TC", sans-serif; }
+  .box { width: calc(100% - 32px); max-width: 420px; background: #fff; border-radius: 16px; padding: 24px;
+          box-shadow: 0 2px 8px rgba(16,24,40,.12); text-align: center; }
+  h1 { font-size: 22px; margin: 0 0 6px; }
+  .go { display: block; margin: 18px 0 10px; padding: 14px; border-radius: 10px; background: #1f6feb; color: #fff;
+         font-weight: 700; text-decoration: none; font-size: 18px; }
+  .small { font-size: 13px; color: #5f6b7a; }
+</style>
+</head>
+<body>
+<div class="box">
+  <h1>倉儲管理系統</h1>
+  <div id="msg">正在開啟…</div>
+  <a class="go" id="go" href="http://192.168.15.7:8000/">開啟倉儲管理系統</a>
+  <div class="small">沒有自動開啟時，請確認手機已連<b>公司內網 Wi-Fi</b>，且倉管電腦已開機，再按上方按鈕。</div>
+  <div class="small" style="margin-top:10px">系統位址 http://192.168.15.7:8000/（2026-11-21 14:05 更新）</div>
+</div>
+<script>
+(function () {
+  var TARGET = 'http://192.168.15.7:8000/';
+  var KEY = 'wms_device_token';
+  var h = new URLSearchParams(location.hash.slice(1));
+  try {
+    if (h.get("save")) localStorage.setItem(KEY, h.get("save"));
+    if (h.has("forget")) localStorage.removeItem(KEY);
+  } catch (e) {}
+  if (location.hash) history.replaceState(null, "", location.pathname);
+  var tok = null;
+  try { tok = localStorage.getItem(KEY); } catch (e) {}
+  var url = TARGET + "#gh=1" + (tok ? "&t=" + encodeURIComponent(tok) : "");
+  document.getElementById("go").href = url;
+  setTimeout(function () { location.replace(url); }, 300);
+})();
+</script>
+</body>
+</html>
